@@ -1,62 +1,37 @@
-body {
-  header, footer {
-    color: darkblue;
-    text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
+*,
+*:before,
+*:after {box-sizing: border-box;}
 
-  footer {
-    font-size: 10px;
-    bottom: 0;
-    height: 20px;
-    background-color: black;
-    color: white;
-  }
-  header {
-    font-size: 15px;
-    top: 0;
-    height: 25px;
-    padding: 15px 0;
-    background-color: black;
-    color: white;
-  }
-  #main {
-    position: relative;
-    top: 50px;
-    #selection-list, #current-selection {
-      display: inline-block;
-      float: left;
-    }
-    #selection-list {
-      width: 100px;
-      height: 300px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      .small-cat {
-        width: 92%;
-        display: block;
-        margin: 5px;
-        border: 1px solid white;
-        &:hover {
-          border-color: black;
-          cursor: pointer;
-        }
-      }
-    }
-    #current-selection {
-      display: none;
-      #selection-name {
+.new-note-form {
+  margin-bottom: 15px;
+}
+.new-note-content {
+  width:100%;
+  display: block;
+  font-size: 1.3em;
+}
 
-      }
-      #current-count {
+.notes {
+  list-style-type: none;
+  margin:0;
+  padding: 0;
+}
+.note {
+  display: inline-block;
+  width: 250px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  padding:10px;
+  list-style-type: none;
+  background-color: #cde;
+}
 
-      }
-      #selection-photo {
-        width: 500px;
-      }
-    }
-  }
+.date {
+  font-size: 10px;
+}
 
+.note-date {
+  font-size:0.7em;
+  margin-bottom: 10px;
+  display: block;
 }

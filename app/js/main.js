@@ -1,58 +1,80 @@
 (function () {
-    var cats = null,
-        currentSelectionElem = document.getElementById('current-selection'),
-        selectionNameElem = document.getElementById('selection-name'),
-        currentCountElem = document.getElementById('current-count'),
-        selectionPhotoElem = document.getElementById('selection-photo');
-
-    ajax.load('../cats.json', loadSuccessCb);
-    selectionPhotoElem.addEventListener('click', addClicks, false);
-
-    function loadSuccessCb (data) {
-        var parentElem = document.getElementById('selection-list'),
-            docFragment = document.createDocumentFragment(),
-            index = 0,
-            catsLength;
-        //We use a comparator to compare the name of two cats.
-        cats = data.sort(function (a, b) {
-            return a.name.localeCompare(b.name);
-        });
-        catsLength = cats.length;
-        console.log('We have loaded the cats:' + JSON.stringify(cats));
-        for (;index < catsLength; index += 1) {
-            var imgElem = document.createElement('img');
-            imgElem.id = cats[index].id;
-            imgElem.src = cats[index].photo;
-            imgElem.className = 'small-cat';
-            imgElem.addEventListener('click', selectCat, false);
-            docFragment.appendChild(imgElem);
-        }
-        parentElem.appendChild(docFragment);
-    }
-
-    function selectCat (event) {
-        var index = 0,
-            catsLength = cats.length;
-        currentSelectionElem.style.display = 'inline-block';
-        console.log('This cat was selected:' + event.target.id);
-        for (;index < catsLength; index += 1) {
-            if(cats[index].id === event.target.id) {
-                selectionNameElem.innerHTML = cats[index].name;
-                currentCountElem.innerHTML = cats[index].count;
-                selectionPhotoElem.src = cats[index].photo;
+    var model = {
+        init: function() {
+            if (!localStorage.notes) {
+                localStorage.notes = JSON.stringify([]);
             }
+        },
+        add: function(obj) {
+            var data = JSON.parse(localStorage.notes);
+            data.push(obj);
+            localStorage.notes = JSON.stringify(data);
+        },
+        getAllNotes: function() {
+            return JSON.parse(localStorage.notes);
         }
-    }
+    };
 
-    function addClicks() {
-        var index = 0,
-            catsLength = cats.length;
 
-        for (;index < catsLength; index += 1) {
-            if(cats[index].name === selectionNameElem.innerHTML) {
-                cats[index].count += 1;
-                currentCountElem.innerHTML = cats[index].count;
+    var octopus = {
+        addNewNote: function(noteStr) {
+            model.add({
+                content: noteStr,
+                date: new Date().toUTCString()
+            });
+            view.render();
+        },
+
+        getNotes: function() {
+            return model.getAllNotes();
+        },
+
+        init: function() {
+            model.init();
+            view.init();
+        }
+    };
+
+
+    var view = {
+        init: function() {
+            this.noteList = document.getElementById('notes');
+            var newNoteForm = document.getElementById('new-note-form');
+            var newNoteContent = document.getElementById('new-note-content');
+            newNoteForm.addEventListener('submit', function(e){
+                octopus.addNewNote(newNoteContent.value);
+                newNoteContent.value = '';
+                e.preventDefault();
+            }, false);
+            view.render();
+        },
+        render: function(){
+            var index = 0,
+                notes = octopus.getNotes(),
+                notesLength = notes.length,
+                docFrag = document.createDocumentFragment();
+
+            while (this.noteList.firstChild) {
+                this.noteList.removeChild(this.noteList.firstChild);
             }
+
+            for (; index < notesLength; index += 1) {
+                var li = document.createElement('li'),
+                    span1 = document.createElement('span'),
+                    span2 = document.createElement('span');
+                li.className = 'note';
+                span1.innerHTML = notes[index].content + ' ';
+                span2.innerHTML = notes[index].date;
+                span2.className = 'date';
+                li.appendChild(span1);
+                li.appendChild(span2);
+                docFrag.appendChild(li);
+            }
+
+            this.noteList.appendChild(docFrag);
         }
-    }
+    };
+
+    octopus.init();
+
 })();
