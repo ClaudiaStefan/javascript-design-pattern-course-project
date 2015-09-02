@@ -1,0 +1,18 @@
+{
+  "name": "javascript-design-pattern-course-project",
+  "version": "1.0.0",
+  "description": "An example module to illustrate the usage of a package.json",
+  "author": "Claudia Stefan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ClaudiaStefan/javascript-design-pattern-course-project.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.8.2",
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4",
+    "sass": "^0.5.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,62 @@
+body {
+  header, footer {
+    color: darkblue;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  footer {
+    font-size: 10px;
+    bottom: 0;
+    height: 20px;
+    background-color: black;
+    color: white;
+  }
+  header {
+    font-size: 15px;
+    top: 0;
+    height: 25px;
+    padding: 15px 0;
+    background-color: black;
+    color: white;
+  }
+  #main {
+    position: relative;
+    top: 50px;
+    #selection-list, #current-selection {
+      display: inline-block;
+      float: left;
+    }
+    #selection-list {
+      width: 100px;
+      height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .small-cat {
+        width: 92%;
+        display: block;
+        margin: 5px;
+        border: 1px solid white;
+        &:hover {
+          border-color: black;
+          cursor: pointer;
+        }
+      }
+    }
+    #current-selection {
+      display: none;
+      #selection-name {
+
+      }
+      #current-count {
+
+      }
+      #selection-photo {
+        width: 500px;
+      }
+    }
+  }
+
+}
