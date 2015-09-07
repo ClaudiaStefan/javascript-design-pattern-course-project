@@ -15,6 +15,11 @@
 
         getAllCats: function() {
             return this.cats;
+        },
+
+        addNewCat: function (cat) {
+            cat.id = cat.name+ '_' + this.cats.length;
+            this.cats.push(cat);
         }
     };
 
@@ -26,6 +31,7 @@
             function successCb (data) {
                 model.setCats(data);
                 viewCatList.init();
+                viewAdmin.init();
             }
         },
 
@@ -50,6 +56,20 @@
                 }
             }
             viewCurrentCat.render(model.currentCat);
+        },
+
+        showAdminMode: function () {
+            viewAdmin.showAdmin();
+        },
+
+        saveNew: function (cat) {
+            model.addNewCat(cat);
+            viewCatList.render();
+            viewAdmin.hideAdmin();
+        },
+
+        cancel: function () {
+            viewAdmin.hideAdmin();
         }
     };
 
@@ -111,6 +131,44 @@
                 }
             }
         }
+    };
+
+    var viewAdmin = {
+        init: function() {
+            var that = this;
+            this.adminBtnElem = document.getElementById('admin-btn');
+            this.addNewContainerElem = document.getElementById('add-new-container');
+            this.addNewNameElem = document.getElementById('new-name');
+            this.addNewURLElem = document.getElementById('new-url');
+            this.addNewCountElem = document.getElementById('new-count');
+            this.saveElem = document.getElementById('save');
+            this.cancelElem = document.getElementById('cancel');
+
+            this.adminBtnElem.addEventListener('click', octopus.showAdminMode, false);
+            this.saveElem.addEventListener('click', function () {
+                var newCat = {
+                    'name': that.addNewNameElem.value,
+                    'photo': that.addNewURLElem.value,
+                    'count': isNaN(that.addNewCountElem.value)? 0 : parseInt(that.addNewCountElem.value)
+                };
+
+                octopus.saveNew(newCat);
+
+            }, false);
+            this.cancelElem.addEventListener('click', octopus.cancel, false);
+        },
+
+        showAdmin: function () {
+            this.addNewContainerElem.style.display = 'inline-block';
+        },
+
+        hideAdmin: function () {
+            this.addNewNameElem.value = '';
+            this.addNewURLElem.value = '';
+            this.addNewCountElem.value = '';
+            this.addNewContainerElem.style.display = 'none';
+        }
+
     };
     octopus.init();
 })();
